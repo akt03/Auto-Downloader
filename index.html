@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk File Download</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        button {
+            width: 400px;
+            height: 100px;
+            padding: 15px 20px;
+            font-size: 18px;
+            background-color: #03fc5e;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, width 1.5s ease, height 1.5s ease, font-size 1.5s ease;
+        }
+
+        button:hover {
+            background-color: #03fc5a;
+            font-size: 25px;
+            width: 500px;
+            height: 150px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="openAndDownloadLinks()">Open and Download Links</button>
+
+    <script>
+
+        let fileContent =
+            `https://drive.google.com/file/d/1Sw9fpLsk8GabqQRifDu7z7qSB9eNiqKc/view?usp=drive_link
+https://drive.google.com/file/d/11o3EgfzUymQI1ZFPZgviyxwdbyQkMGNP/view?usp=drive_link
+https://drive.google.com/file/d/1ZzvFtVLb5Mt59J2xcRCYhpR5H3igpNa_/view?usp=drive_link
+https://drive.google.com/file/d/16_S6cWLg28QRdauPdjW2obJcBMTYmWnV/view?usp=drive_link
+https://drive.google.com/file/d/1da5ICjEWAOz1MdrpCf_hfZYRVw77LVyN/view?usp=drive_link
+`;
+
+        fileContent = fileContent.replaceAll("/view?usp=drive_link", "");
+        fileContent = fileContent.replaceAll("file/d/", "uc?export=download&id=");
+
+        const urls = fileContent.trim().split('\n');
+
+        //   Process the URLs as needed
+        urls.forEach((url, index) => {
+            console.log(`URL ${index + 1}: ${url}`);
+            // You can perform additional processing or tasks with each URL here
+        });
+
+
+        function openAndDownloadLinks() {
+            let currentIndex = 0;
+
+
+            function downloadFile(index) {
+                if (index < urls.length) {
+                    let url = urls[index];
+                    const link = document.createElement('a');
+                    try {
+                        setTimeout(() => {
+                        link.href = url;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        downloadFile(index + 1);
+                        }, 4000)
+                    } catch (err) {
+                        console.log(`Error downloading file at index ${index}: ${error.message}`)
+                    } 
+                }
+                // Move to the next file after a short delay (e.g., 1 second)
+            }
+
+            // Start downloading from the first file
+            downloadFile(currentIndex);
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>
